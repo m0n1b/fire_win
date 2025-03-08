@@ -1,2 +1,3 @@
 flask
 pywin32
+sc config ip_add_auto start= auto

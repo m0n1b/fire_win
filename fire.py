@@ -18,7 +18,7 @@ from flask_httpauth import HTTPBasicAuth
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 USER_CREDENTIALS = {
-    "admin": "Pb121212!!!"
+    "admin": "******"
 }
 SERVICE_NAME = "ip_add_auto"
 SERVICE_DISPLAY_NAME = "IP Auto Firewall Service"

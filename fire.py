@@ -12,9 +12,14 @@ import win32service
 import win32event
 import time
 from datetime import datetime, timedelta
+from flask_httpauth import HTTPBasicAuth
+
 
 app = Flask(__name__)
-
+auth = HTTPBasicAuth()
+USER_CREDENTIALS = {
+    "admin": "Pb121212!!!"
+}
 SERVICE_NAME = "ip_add_auto"
 SERVICE_DISPLAY_NAME = "IP Auto Firewall Service"
 DB_FILE = "waf_protect.db"
@@ -81,6 +86,13 @@ def is_rate_limited(ip):
 
     return False
 
+
+@auth.verify_password
+def verify_password(username, password):
+    if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
+        return username
+    return None
+    
 @app.before_request
 def check_rate_limit():
     ip = get_request_ip()
@@ -103,6 +115,7 @@ def get_request_ip():
     return ip
 
 @app.route('/add_fff', methods=['GET', 'POST'])
+@auth.login_required
 def add_fff():
     ip = get_request_ip()
     if not is_valid_ipv4(ip):
